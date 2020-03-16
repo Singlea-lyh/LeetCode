@@ -36,6 +36,8 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
+
+/*
 void sortArray(int* iNums, int* iSortNum, int iNumsSize){
     int i, j;
     int iTemp;
@@ -109,6 +111,135 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize){
     return iReturn;
 
 }
+*/
+
+//定义hash数据结构
+struct hash_data{
+    int iKey;
+    int iData;
+    struct hash_data *stNext;
+};
+
+//定义hash链表
+struct hash_table{
+    struct hash_data **stHead;
+    int iHashLen;
+};
+
+//hash表初始化
+int hash_init(struct hash_table *stHashTable, int iHashLen){
+    if(iHashLen <= 0){
+        return -1;
+    }
+    
+    struct  hash_data **stHashData = (struct hash_data**) malloc(sizeof(struct hash_data*) * iHashLen);
+    stHashTable->stHead = stHashData;
+    memset(stHashTable->stHead, 0, iHashLen * sizeof(struct hash_data *));
+    /*
+    for(int i = 0; i < iHashLen; ++i){
+        stHashTable->stHead[i] = NULL;
+    }
+    */
+    if(stHashTable->stHead == NULL){
+        return -1;
+    }
+    stHashTable->iHashLen = iHashLen;
+    
+    return 0;
+}
+
+//hash表释放
+int hash_free(struct hash_table *stHashTable){
+    if(stHashTable->stHead != NULL){
+        for(int i = 0; i < stHashTable->iHashLen; ++i){
+            struct hash_data *stTempHead = stHashTable->stHead[i];
+            while(stTempHead != NULL){
+                struct hash_data *stTemp = stTempHead;
+                stTempHead = stTempHead->stNext;
+                free(stTemp);
+            }
+        }
+        free(stHashTable->stHead);
+        stHashTable->stHead = NULL;
+    }
+    stHashTable->iHashLen = 0;
+
+    return 0;
+}
+
+//hash表计算
+int hash_cal(struct hash_table *stHashTable, int iKey){
+    int Key = abs(iKey) % stHashTable->iHashLen;
+    return Key;
+}
+
+//hash表插入
+int hash_insert(struct hash_table *stHashTable, int iKey, int iVaule){
+    struct hash_data *stDataTemp = (struct hash_data*)malloc(sizeof(struct hash_data));
+    stDataTemp->stNext = NULL;
+    if(stDataTemp == NULL){
+        return -1;
+    }
+
+    stDataTemp->iKey = iKey;
+    stDataTemp->iData = iVaule;
+    int k = hash_cal(stHashTable, iKey);
+    stDataTemp->stNext = stHashTable->stHead[k];
+    stHashTable->stHead[k] = stDataTemp;
+
+    return 0;
+}
+
+//hash表查找
+struct hash_data* hash_find(struct hash_table* stHashTable, int iKey){
+    int k = hash_cal(stHashTable, iKey);
+    struct hash_data *stTempData = NULL;
+
+    stTempData = stHashTable->stHead[k];
+
+    while(stTempData != NULL){
+        if(stTempData->iKey == iKey){
+            return stTempData;
+        }
+        stTempData = stTempData->stNext;
+    }
+
+    return NULL;
+}
+
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize){
+    int *iReturn = (int *)malloc(2 * sizeof(int));
+    int iCode = 0;
+    int i = 0;
+    int iSum1, iSum2;
+    
+    *returnSize = 0;
+
+    struct hash_table *stHashTable = (struct hash_table*)malloc(sizeof(struct hash_table));
+
+    hash_init(stHashTable, numsSize);
+
+    for(i = 0; i < numsSize; ++i){
+        iSum1 = nums[i];
+        iSum2 = target - iSum1;
+        struct hash_data *stTemp = hash_find(stHashTable, iSum2);
+
+        if(stTemp != NULL && stTemp->iData != i){
+            iReturn[0] = stTemp->iData;
+            iReturn[1] = i;
+            *returnSize = 2;
+            break;
+        }
+        else{
+                     
+            hash_insert(stHashTable, iSum1, i);
+        }
+    }
+    hash_free(stHashTable);
+    free(stHashTable);
+
+    return iReturn;     
+}
 
 // @lc code=end
-
