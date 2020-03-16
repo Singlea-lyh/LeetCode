@@ -1,3 +1,13 @@
 {
-    "python.pythonPath": "e:\\Office\\Code\\LeetCode\\Python\\.venv\\Scripts\\python.exe"
+    //"python.pythonPath": "D:\\OfficeSoft\\Python\\Python38\\pyhotn.exe",
+    "python.venvPath": "D:\\OfficeSoft\\Python\\VirtualEnv\\LeetCode_Env",
+    "python.venvFolders": [
+        "envs",
+        ".pyenv",
+        ".venv38",
+        ".direnv",
+        ".venv.",
+        ".venv38"
+      ],
+      "python.pythonPath": "D:\\OfficeSoft\\Python\\VirtualEnv\\LeetCode_Env\\.venv38\\Scripts\\python.exe"
 }
