@@ -42,7 +42,7 @@
 
 // @lc code=start
 
-
+/*
 double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size){
      int iNumMid1, iNumMid2;
     
@@ -73,7 +73,10 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
     return (nums1[iNumMid1] + nums2[iNumMid2]) / 2;
 
 }
-
+*/
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size){
+    
+}
 
 // @lc code=end
 
