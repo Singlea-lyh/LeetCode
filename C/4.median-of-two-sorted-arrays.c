@@ -74,25 +74,28 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
 
 }
 */
+
+#include <stdio.h>
+
 double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size){
     int iNum1, iNum2;
     int iSumNum;
     int iMid, iMidTemp, iDelNum;
-    double iReturn = 0;
+    double dReturn = 0.0;
 
-    iSumNum = iNum1 + iNum2;
+    iSumNum = nums1Size + nums2Size;
     iNum1 = iNum2 = 0;
     iDelNum = 0;
 
     iMid = iMidTemp = iSumNum / 2;
 
     if(nums1Size == 0){
-        iReturn = (nums2Size % 2) ? (nums2[nums2Size / 2]):((nums2[nums2Size / 2] + nums2 [(nums2Size / 2) - 1]) / 2) ;
-        return iReturn;
+        dReturn = (nums2Size % 2) ? (nums2[nums2Size / 2]):((nums2[nums2Size / 2] + nums2 [(nums2Size / 2) - 1]) / 2.0) ;
+        return dReturn;
     }
-    else if(nums2Size){
-        iReturn = (nums1Size % 2) ? (nums1[nums1Size / 2]):((nums1[nums1Size / 2] + nums1[(nums1Size / 2) - 1]) / 2) ;
-        return iReturn;
+    else if(nums2Size == 0){
+        dReturn = (nums1Size % 2) ? (nums1[nums1Size / 2]):((nums1[nums1Size / 2] + nums1[(nums1Size / 2) - 1]) / 2.0) ;
+        return dReturn;
     }
 
     while(iNum1 < nums1Size && iNum2 < nums2Size && iDelNum < iMid){
@@ -102,8 +105,8 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
             break;
         }
 
-        if(iNum1 + iMidTemp < nums1Size && iNum2 + iMidTemp < nums2Size){
-            if(nums1[iNum1+iMidTemp] < nums2[iNum2+iMidTemp]){
+        if(iNum1 + iMidTemp <= nums1Size && iNum2 + iMidTemp <= nums2Size){
+            if(nums1[iNum1+iMidTemp - 1] <= nums2[iNum2+iMidTemp - 1]){
                 iNum1 += iMidTemp;
             }
             else{
@@ -113,7 +116,7 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
             //iMidTemp = iMid - iDelNum;
         }
         else if(iNum1 + iMidTemp >= nums1Size){
-            if(nums1[nums1Size - 1] < nums2[iNum2 + iMidTemp]){
+            if(nums1[nums1Size - 1] < nums2[iNum2 + iMidTemp -1]){
                 iNum1 = nums1Size - 1;
                 iDelNum += (nums1Size - iNum1);
                 //iMidTemp = iMid - iDelNum;
@@ -126,7 +129,7 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
             }
         }
         else if(iNum2 + iMidTemp >= nums2Size){
-            if(nums2[nums2Size - 1] < nums2[iNum2 + iMidTemp]){
+            if(nums2[nums2Size - 1] < nums1[iNum1 + iMidTemp - 1]){
                 iNum2 = nums2Size - 1;
                 iDelNum += (nums2Size - iNum2);
                 //iMidTemp = iMid -iDelNum;
@@ -140,69 +143,99 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
         iMidTemp = iMid - iDelNum;
     }
 
-    if(iNum1 < nums1Size && iNum2 < nums1Size){
-        if(nums1[iNum1] < nums2[iNum2]){
+    iMidTemp /= 2;
+
+    if((iMid - iDelNum == 1) && (iSumNum % 2 == 1)){
+       if(iNum1 < nums1Size && iNum2 < nums2Size){
+          if(nums1[iNum1] < nums2[iNum2]){
+              ++iNum1;
+          }
+          else if(nums1[iNum1] > nums2[iNum2]){
+              ++iNum2;
+          }
+       } 
+       else if(iNum1 < nums1Size){
+           ++iNum1;
+       }
+       else if(iNum2 < nums2Size)
+       {
+           ++iNum2;
+       }
+       
+    }
+
+    if(iNum1 < nums1Size && iNum2 < nums2Size){
+        if(nums1[iNum1] <= nums2[iNum2]){
             if(iSumNum % 2){
-                iReturn = nums1[iNum1];
+                dReturn = nums1[iNum1];
             }
             else{
                 if(iNum1 + 1 < nums1Size){
                     if(nums1[iNum1 + 1] < nums2[iNum2]){
-                        iReturn = (nums1[iNum1] + nums1[iNum1 + 1]) / 2;
+                        dReturn = (nums1[iNum1] + nums1[iNum1 + 1]) / 2.0;
                     }
                     else{
-                        iReturn = (nums1[iNum1] + nums2[iNum2]) / 2;
+                        dReturn = (nums1[iNum1] + nums2[iNum2]) / 2.0; 
                     }
+                }
+                else{
+                      dReturn = (nums1[iNum1] + nums2[iNum2]) / 2.0;
                 }
             }
         }
         else if(nums1[iNum1] > nums2[iNum2]){
             if(iSumNum % 2){
-                iReturn = nums2[iNum2];
+                dReturn = nums2[iNum2];
             }
             else{
                 if(iNum2 + 1 < nums2Size){
                     if(nums2[iNum2 + 1] < nums1[iNum1]){
-                        iReturn = (nums2[iNum2] + nums2[iNum2 + 1]) / 2;
+                        dReturn = (nums2[iNum2] + nums2[iNum2 + 1]) / 2.0;
                     }
                     else{
-                        iReturn = (nums1[iNum1] + nums2[iNum2]) / 2;
+                        dReturn = (nums1[iNum1] + nums2[iNum2]) / 2.0; 
                     }
+                }
+                else
+                {
+                    dReturn = (nums1[iNum1] + nums2[iNum2]) / 2.0;
                 }
             }
         }
         else{
-            iReturn = nums1[iNum1];
+            dReturn = nums1[iNum1];
         }
     }
-    else if(nums1 < nums1Size){
+    else if(iNum1 < nums1Size){
         if(iSumNum % 2){
-            iReturn = nums1[iNum1 + iMidTemp];
+            dReturn = nums1[iNum1 + iMidTemp];
         }
         else{
-            iReturn = (nums1[iNum1 + iMidTemp] + nums1[iNum1 + iMidTemp + 1]) / 2;
+            dReturn = (nums1[iNum1 + iMidTemp] + nums1[iNum1 + iMidTemp + 1]) / 2.0;
         }
 
     }
     else{
         if(iSumNum % 2){
-            iReturn = nums2[iNum2 + iMidTemp];
+            dReturn = nums2[iNum2 + iMidTemp];
         }
         else{
-            iReturn = (nums2[iNum2 + iMidTemp] + nums2[iNum2 + iMidTemp + 1]) / 2;
+            dReturn = (nums2[iNum2 + iMidTemp] + nums2[iNum2 + iMidTemp + 1]) / 2.0;
         }
     }
 
-    return iReturn;
+    return dReturn;
 }
 
+
+
 int main(){
-    int aiNum1[2] = {1, 2};
-    int aiNum2[2] = {3, 4};
+    int aiNum1[4] = {2, 3, 4, 5};
+    int aiNum2[1] = {1};
 
-    double fReturn = findMedianSortedArrays(aiNum1, 2, aiNum2, 2);
+    double fReturn = findMedianSortedArrays(aiNum1, 4, aiNum2, 1);
 
-    printf("%lf\n", fReturn);
+    printf("%f\n", fReturn);
 
     return 0;
 }
