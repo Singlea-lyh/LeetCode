@@ -424,11 +424,12 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
             iMin = iSplit1 + 1;
         }
         else{
+            iMaxLeft = 0;
             if(iSplit1 == 0){
                 iMaxLeft = nums2[iSplit2 - 1];
             }
             else if(iSplit2 == 0){
-                iMaxLeft = nums2[iSplit1 - 1];
+                iMaxLeft = nums1[iSplit1 - 1];
             }
             else{
                 iMaxLeft = (nums1[iSplit1 - 1] > nums2[iSplit2 - 1]) ? nums1[iSplit1 - 1] : nums2[iSplit2 - 1];
@@ -437,8 +438,9 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
                 return iMaxLeft;
             }
 
+            iMinRight = 0;
             if(iSplit1 == nums1Size){
-                iMinRight = nums1[iSplit2];
+                iMinRight = nums2[iSplit2];
             }
             else if(iSplit2 == nums2Size){
                 iMinRight = nums1[iSplit1];
@@ -452,8 +454,7 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
             }
         }
     }
-
-
+    return 0.0;
 }
 
 int main(){
