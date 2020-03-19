@@ -344,7 +344,7 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
 }
 
 */
-
+/*
 #define MIN(a, b)  ((a < b) ? a : b)
 #define MAX(a, b)  ((a < b) ? b : a)
 
@@ -396,6 +396,64 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
 
     return (findKTh(nums1, 0, nums1Size - 1, nums2, 0, nums2Size - 1, iLeft)
          + findKTh(nums1, 0, nums1Size - 1, nums2, 0, nums2Size -1 , iRight)) / 2.0;
+}
+*/
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size){
+    int iSplit1, iSplit2;
+    int iSumLen = 0;
+    int iMaxLeft, iMinRight;
+    int iMin, iMax;
+
+    if(nums1Size > nums2Size){
+        return findMedianSortedArrays(nums2, nums2Size, nums1, nums1Size);
+    }
+
+    iMin = 0, iMax = nums1Size;
+    iSplit1 = iSplit2 = 0;
+    iMaxLeft = iMinRight = 0;
+    iSumLen = nums1Size + nums2Size;
+
+    while(iMin <= iMax){
+        iSplit1 = (iMin + iMax) / 2;
+        iSplit2 = (iSumLen + 1) / 2 - iSplit1;
+
+        if(iSplit1 > iMin && nums1[iSplit1 -1] > nums2[iSplit2]){
+            iMax = iSplit1 - 1;
+        }
+        else if(iSplit1 < iMax && nums2[iSplit2 - 1] > nums1[iSplit1]){
+            iMin = iSplit1 + 1;
+        }
+        else{
+            if(iSplit1 == 0){
+                iMaxLeft = nums2[iSplit2 - 1];
+            }
+            else if(iSplit2 == 0){
+                iMaxLeft = nums2[iSplit1 - 1];
+            }
+            else{
+                iMaxLeft = (nums1[iSplit1 - 1] > nums2[iSplit2 - 1]) ? nums1[iSplit1 - 1] : nums2[iSplit2 - 1];
+            }
+            if(iSumLen % 2) {
+                return iMaxLeft;
+            }
+
+            if(iSplit1 == nums1Size){
+                iMinRight = nums1[iSplit2];
+            }
+            else if(iSplit2 == nums2Size){
+                iMinRight = nums1[iSplit1];
+            }
+            else{
+                iMinRight = (nums1[iSplit1] < nums2[iSplit2]) ? nums1[iSplit1] : nums2[iSplit2];
+            }
+
+            if (iSumLen % 2 == 0){
+                return (iMaxLeft + iMinRight) / 2.0;
+            }
+        }
+    }
+
+
 }
 
 int main(){
