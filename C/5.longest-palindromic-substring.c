@@ -85,7 +85,9 @@ char * longestPalindrome(char * s){
     return acMaxPalindromic;
 }
 */
+/*
 #define MAX(a, b) (a > b) ? a : b
+#define MIN(a, b) (a < b) ? a : b
 
 int palindromeLen(char* s, int iSLen, int iLeft, int iRight){
     int iReturn  = 0;
@@ -137,13 +139,100 @@ char * longestPalindrome(char * s){
 
     return acMaxPalindromic;    
 }
+*/
 
+#define MAX(a, b) (a > b) ? a : b
+#define MIN(a, b) (a < b) ? a : b
+
+int palindromeLen(char* s, int iSLen, int iMid, int iLastLen){
+    int iReturn  = 0;
+    int iL = iMid - iLastLen;
+    int iR = iMid + iLastLen;
+
+    while(iL >= 0 && iR < iSLen && s[iL] == s[iR]){
+        --iL;
+        ++iR;
+        ++iLastLen;
+    }
+
+    iReturn = iLastLen;
+
+    return iReturn;
+}
+
+char *longestPalindrome(char *s){
+    int iSumLen = strlen(s);
+    int iTemp = iSumLen * 2 + 1;
+    int iStart=0, iEnd = 0;
+    int iMaxLen = 0;
+    int iPox = 0, iMaxRight = 0;
+    char *acReturn = NULL ;
+    int *iRL = NULL;
+    char *asTemp = NULL;
+
+    if(iSumLen == 0){
+        return "";
+    }
+
+    acReturn = (char*)malloc(sizeof(char) * (iSumLen + 1));
+    iRL = (int *)malloc(sizeof(int) * iTemp);
+    asTemp = (char*)malloc(sizeof(char) * iTemp);
+
+    for(int i = 0, j = 0 ; i < iSumLen; ++i, ++j){
+        asTemp[j++] = '#';
+        asTemp[j] = s[i];
+    }
+    asTemp[iTemp - 1] = '#';
+
+    for(int i = 0; i < iSumLen * 2 + 1; ++i){
+        int iLastLen = 0;
+
+        if(i < iMaxRight){
+            iLastLen = MIN(iRL[2 * iPox - i], iMaxRight - i);
+        }
+        else{
+            iLastLen = 1;
+        }
+
+        iRL[i] = palindromeLen(asTemp, iTemp, i, iLastLen);
+
+        if(iRL[i] + i - 1 > iMaxRight){
+            iMaxRight = iRL[i] + i - 1;
+            iPox = i;
+        }
+    }
+
+    for(int i = 0; i < iTemp; ++i){
+        if((iRL[i] - 1) > iMaxLen){
+            iMaxLen = iRL[i] - 1;
+            iStart = i - (iRL[i] - 1);
+            printf("%d -- %d\n", iMaxLen, iStart);       
+        }
+    }
+
+    // memset(acReturn, 0, (sizeof(char) * (iSumLen + 1)));
+   
+
+    int j = 0;
+    int i = iStart;
+    memset(acReturn, 0, iSumLen + 1);
+    while(j < iMaxLen && i < iTemp){
+        if(asTemp[i] == '#'){
+            ++i;
+        }
+       acReturn[j++] = asTemp[i++];
+    }
+
+    free(iRL);
+    free(asTemp);
+
+    return acReturn;
+}
 
 int main(){
     char s[] = "babad";
 
-    // char d[10];
-
+    // char d[10];s
     // memcpy(d, s, 2);
     // printf("%s\n", d);
 
