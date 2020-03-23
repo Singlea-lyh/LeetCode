@@ -54,9 +54,77 @@
 
 // @lc code=start
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+/*
+char * convert(char * s, int numRows){
+    int iStrLen = 0;
+    char *acConvertStr = NULL;
+    int iDistance = 0;
+    int iReturn = 0;
+
+    iStrLen = strlen(s);
+
+    if(numRows <= 1){
+        return s;
+    }
+
+    iDistance = 2 * (numRows - 1);
+
+    acConvertStr = (char*)malloc(sizeof(char) * (iStrLen + 1));
+
+    for(int i = 0; i < numRows; ++i){
+        for(int j = 0; j < iStrLen; ++j){
+            int k = j % iDistance;
+            if(i == k || k == iDistance - i){
+                acConvertStr[iReturn++] = s[j];
+            }
+        }
+    }
+
+    acConvertStr[iStrLen] = '\0';
+
+    return acConvertStr;
+}
+*/
 
 char * convert(char * s, int numRows){
+    int iStrLen = 0;
+    char *acConvertStr = NULL;
+    int iDistance = 0;
+    int iReturn = 0;
 
+    iStrLen = strlen(s);
+    iDistance = 2 * (numRows - 1);
+
+    if(numRows <= 1){
+        return s;
+    }
+
+    acConvertStr = (char*)malloc(sizeof(char) * (iStrLen + 1));
+
+    for(int i = 0; i < numRows; ++i){
+         int j = i;
+         int iAdd = i * 2;
+      
+        while(j < iStrLen){
+            acConvertStr[iReturn++] = s[j];
+            iAdd = iDistance - iAdd;
+            j += (i == 0 || i == numRows - 1) ? iDistance : iAdd;
+        }
+        
+    }
+
+    acConvertStr[iStrLen] = '\0';
+
+    return acConvertStr;
+}
+
+int main(){
+    char s[] = "PAYPALISHIRING";
+
+    printf("%s\n", convert(s, 4));
 }
 
 
