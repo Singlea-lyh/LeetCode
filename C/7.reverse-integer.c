@@ -51,7 +51,8 @@
 #define MIN  -2147483648
 
 // #define MAX  0x7fffffff
-// #define MIN  0x80000001
+// // #define MIN  0x80000000
+// #define MIN 0x80000000
 
 int reverse(int x){
     int iReturn = 0;
@@ -78,6 +79,7 @@ int reverse(int x){
 
 int main(){
     int x =123;
+
 
     int a = reverse(x);
 
