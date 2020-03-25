@@ -51,22 +51,84 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 typedef int bool;
-#define True 1
-#define False 0
+#define true 1
+#define false 0
+
+// bool isPalindrome(int x){
+//     bool bIsPad = true;
+//     int iNum = 0;
+//     int iTemp = x;
+//     int iCount = 0;
+//     int iStart = 1, iEnd = 0;
+
+//     if(iTemp < 0){
+//         return false;
+//     }
+//     else if(iTemp >= 0 && iTemp <= 9){
+//         return true;
+//     }
+
+//     while(iTemp > 0){
+//         iTemp /= 10;
+//         iNum++;
+//     }
+
+//     iEnd = iNum;
+//     iCount = iNum;
+//     iTemp = x;
+
+//     while(iCount > 1){
+//         int iNum1 = iNum - iCount;
+//         iStart = iTemp % 10;
+//         iEnd = x / (int)(pow(10, iNum  - 1 - iNum1 / 2));
+//         iEnd %= 10;
+
+//         if(iStart != iEnd){
+//             bIsPad = false;
+//             break;
+//         }
+//         else{
+//             iTemp /= 10;
+//             iCount -= 2;
+//         }
+//     }
+
+//     return bIsPad;   
+
+// }
 
 bool isPalindrome(int x){
+    bool bIsPad = false;
+    int iReverteNum = 0;
+    int iTemp = x;
 
+    if(x < 0 || (x % 10  == 0 && x != 0)){
+        return false;
+    }
+
+    while(iReverteNum < iTemp){
+        iReverteNum = iReverteNum * 10 + iTemp % 10;
+        iTemp /= 10;
+    }
+
+    if(iReverteNum == iTemp || (iReverteNum / 10) == iTemp){
+        bIsPad = true;
+    }
+
+    return bIsPad;
 }
 
 int main(){
     int x = 121;
     bool iReturn = isPalindrome(x);
 
-    char cStr[] = (iReturn) ? "True" : "False";
+    int iReturn1 = (iReturn) ? 1 : 0;
+    
 
-    printf("%s\n", cStr);
+    printf("%d\n", iReturn1);
 
     return 0;    
 }
