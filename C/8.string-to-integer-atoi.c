@@ -88,9 +88,86 @@
 
 // @lc code=start
 
+// #define MAX 0x7fffffff
+// #define MIN 0x80000000
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX  2147483647
+#define MIN  -2147483648
 
 int myAtoi(char * str){
+    int iStrLen = 0;
+    int iReturn = 0;
+    int iIsPlus = -1;
+    int i = 0;
+    int iStart = 0;
 
+    iStrLen = strlen(str);
+
+    if(iStrLen == 0){
+        return iReturn;
+    }
+
+    while(i < iStrLen){
+        char cTemp = str[i];
+        if(cTemp == '-' ){
+            if(iReturn == 0 && iIsPlus == -1 && iStart == 0) {
+                iIsPlus = 0;
+                iStart = 1;
+            }
+            else{
+                break;
+            } 
+        }
+        else if(cTemp == '+' && iIsPlus == -1 && iStart == 0){
+             if(iReturn == 0) {
+                iIsPlus = 1;
+                iStart = 1;
+            }
+            else{
+                break;
+            } 
+        }
+        else if(cTemp >= '0' && cTemp <= '9'){
+            if(iReturn > MAX || (iReturn == MAX / 10 && (cTemp - '0') > 7) || iReturn > MAX / 10) return MAX;
+            if(iReturn < MIN || (iReturn == MIN / 10 && ('0' - cTemp) < -8) || iReturn < MIN / 10) return MIN;
+            iReturn = (iIsPlus) ? (iReturn * 10 + (cTemp - '0')) : (iReturn * 10 + ('0' - cTemp));
+            iStart = 1;
+        }
+        else if((cTemp >= 'a' && cTemp <= 'z') || (cTemp >= 'A' && cTemp <= 'Z')){
+            if(iReturn != 0){
+                break;
+            }
+            else{
+                return iReturn;   
+            }    
+        }
+        else if(cTemp == ' '){
+            if(iReturn != 0 || (iReturn == 0 && iStart)){
+                break;
+            }
+        }
+        else{
+            if(iReturn != 0){
+                break;
+            }
+            else{
+                return 0;
+            }
+        }
+        
+        ++i;      
+    }
+    return iReturn;
+}
+
+int main(){
+    char str[] = "0-1";
+
+    printf("%d\n", myAtoi(str));
 }
 
 
