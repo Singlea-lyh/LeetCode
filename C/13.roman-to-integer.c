@@ -86,6 +86,40 @@
 #include <math.h>
 #include <string.h>
 
+// int romanToInt(char * s){
+//     int iSNum = 0;
+//     int iReturn = 0;
+
+//     iSNum = strlen(s);
+
+//     for(int i = 0; i < iSNum; ++i){
+//         if(s[i] == 'I'){
+//             iReturn = (s[i+1] == 'V' || s[i+1] == 'X') ? iReturn - 1 : iReturn + 1;
+//         }
+//         else if(s[i] == 'V'){
+//             iReturn += 5;
+//         }
+//         else if(s[i] == 'X'){
+//             iReturn = (s[i+1] == 'L' || s[i+1] == 'C') ? iReturn - 10 : iReturn + 10;
+//         }
+//         else if(s[i] == 'L'){
+//             iReturn += 50;
+//         }
+//         else if(s[i] == 'C'){
+//             iReturn = (s[i+1] == 'D' || s[i+1] == 'M') ? iReturn - 100 : iReturn + 100;
+//         }
+//         else if(s[i] == 'D'){
+//             iReturn += 500;
+//         }
+//         else if(s[i] == 'M'){
+//             iReturn += 1000;
+//         }
+//     }
+
+//     return iReturn;
+// }
+
+
 int romanToInt(char * s){
     int iSNum = 0;
     int iReturn = 0;
@@ -93,30 +127,10 @@ int romanToInt(char * s){
     iSNum = strlen(s);
 
     for(int i = 0; i < iSNum; ++i){
-        if(s[i] == 'I'){
-            iReturn = (s[i+1] == 'V' || s[i+1] == 'X') ? iReturn - 1 : iReturn + 1;
-        }
-        else if(s[i] == 'V'){
-            iReturn += 5;
-        }
-        else if(s[i] == 'X'){
-            iReturn = (s[i+1] == 'L' || s[i+1] == 'C') ? iReturn - 10 : iReturn + 10;
-        }
-        else if(s[i] == 'L'){
-            iReturn += 50;
-        }
-        else if(s[i] == 'C'){
-            iReturn = (s[i+1] == 'D' || s[i+1] == 'M') ? iReturn - 100 : iReturn + 100;
-        }
-        else if(s[i] == 'D'){
-            iReturn += 500;
-        }
-        else if(s[i] == 'M'){
-            iReturn += 1000;
-        }
+        
+
     }
 
-    return iReturn;
 }
 
 int main(){
