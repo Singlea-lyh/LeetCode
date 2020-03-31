@@ -1,17 +1,17 @@
 /*
- * @lc app=leetcode id=12 lang=c
+ * @lc app=leetcode id=13 lang=c
  *
- * [12] Integer to Roman
+ * [13] Roman to Integer
  *
- * https://leetcode.com/problems/integer-to-roman/description/
+ * https://leetcode.com/problems/roman-to-integer/description/
  *
  * algorithms
- * Medium (53.71%)
- * Likes:    896
- * Dislikes: 2462
- * Total Accepted:    322.6K
- * Total Submissions: 599.2K
- * Testcase Example:  '3'
+ * Easy (54.66%)
+ * Likes:    1898
+ * Dislikes: 3294
+ * Total Accepted:    618.2K
+ * Total Submissions: 1.1M
+ * Testcase Example:  '"III"'
  *
  * Roman numerals are represented by seven different symbols: I, V, X, L, C, D
  * and M.
@@ -42,96 +42,88 @@
  * C can be placed before D (500) and M (1000) to make 400 and 900.
  * 
  * 
- * Given an integer, convert it to a roman numeral. Input is guaranteed to be
+ * Given a roman numeral, convert it to an integer. Input is guaranteed to be
  * within the range from 1 to 3999.
  * 
  * Example 1:
  * 
  * 
- * Input: 3
- * Output: "III"
+ * Input: "III"
+ * Output: 3
  * 
  * Example 2:
  * 
  * 
- * Input: 4
- * Output: "IV"
+ * Input: "IV"
+ * Output: 4
  * 
  * Example 3:
  * 
  * 
- * Input: 9
- * Output: "IX"
+ * Input: "IX"
+ * Output: 9
  * 
  * Example 4:
  * 
  * 
- * Input: 58
- * Output: "LVIII"
- * Explanation: L = 50, V = 5, III = 3.
+ * Input: "LVIII"
+ * Output: 58
+ * Explanation: L = 50, V= 5, III = 3.
  * 
  * 
  * Example 5:
  * 
  * 
- * Input: 1994
- * Output: "MCMXCIV"
+ * Input: "MCMXCIV"
+ * Output: 1994
  * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
  * 
  */
 
 // @lc code=start
-
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
+int romanToInt(char * s){
+    int iSNum = 0;
+    int iReturn = 0;
 
-typedef struct Map{
-    int iNum;
-    char acRoman[4];
-}Map;
+    iSNum = strlen(s);
 
-struct Map stRoman[13] = {
-    {1000, "M"},
-    {900, "CM"},
-    {500, "D"},
-    {400, "CD"},
-    {100, "C"},
-    {90, "XC"},
-    {50, "L"},
-    {40, "XL"},
-    {10, "X"},
-    {9, "IX"},
-    {5, "V"},
-    {4, "IV"},
-    {1, "I"},
-};
-
-char * intToRoman(int num){
-    int iNumCount = 0;
-    int iTempNum = num;
-    char *acReturn = (char*)malloc(sizeof(char) * 30);
-
-    memset(acReturn, 0, 30);
-
-    int iIndex = 0;
-
-    while(iIndex < 13){
-        while(iTempNum >= stRoman[iIndex].iNum){
-            iTempNum = iTempNum - stRoman[iIndex].iNum;
-            strcat(acReturn, stRoman[iIndex].acRoman);
+    for(int i = 0; i < iSNum; ++i){
+        if(s[i] == 'I'){
+            iReturn = (s[i+1] == 'V' || s[i+1] == 'X') ? iReturn - 1 : iReturn + 1;
         }
-        ++iIndex;
+        else if(s[i] == 'V'){
+            iReturn += 5;
+        }
+        else if(s[i] == 'X'){
+            iReturn = (s[i+1] == 'L' || s[i+1] == 'C') ? iReturn - 10 : iReturn + 10;
+        }
+        else if(s[i] == 'L'){
+            iReturn += 50;
+        }
+        else if(s[i] == 'C'){
+            iReturn = (s[i+1] == 'D' || s[i+1] == 'M') ? iReturn - 100 : iReturn + 100;
+        }
+        else if(s[i] == 'D'){
+            iReturn += 500;
+        }
+        else if(s[i] == 'M'){
+            iReturn += 1000;
+        }
     }
 
-    return acReturn;
+    return iReturn;
 }
 
 int main(){
+    int iReturn = romanToInt("LVIII");
 
-    printf("%s\n", intToRoman(1994));
+    printf("%d\n", iReturn);
+
     return 0;
 }
 
