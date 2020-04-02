@@ -42,10 +42,148 @@
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
-int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+
+// #define NULL 0
+
+void QuickSort(int* aiNum, int iLeft, int iRight){
+    int iTemp = aiNum[iLeft];
+    int iTempLeft = 0, iTempRight = 0, iSwap = 0;
+
+    iTempLeft = iLeft;
+    iTempRight = iRight;
+
+    if(iTempLeft > iTempRight){
+        return;
+
+    }
+
+
+    while(iTempLeft != iTempRight){
+        while(aiNum[iTempRight] >= iTemp && iTempRight > iTempLeft){
+            --iTempRight;
+        }
+        while(aiNum[iTempLeft] <= iTemp && iTempLeft < iTempRight){
+            ++iTempLeft;
+        }
+        if(iTempLeft < iTempRight){
+            // aiNum[iTempLeft] = aiNum[iTempLeft] ^ aiNum[iTempRight];
+            // aiNum[iTempRight] = aiNum[iTempLeft] ^ aiNum[iTempRight];
+            // aiNum[iTempLeft] = aiNum[iTempLeft] ^ aiNum[iTempRight];
+            iSwap = aiNum[iTempLeft];
+            aiNum[iTempLeft] = aiNum[iTempRight];
+            aiNum[iTempRight] = iSwap;
+        }
+    }
+
+    aiNum[iLeft] = aiNum[iTempLeft];
+    aiNum[iTempLeft] = iTemp;
+
+    QuickSort(aiNum, iLeft, iTempLeft - 1);
+    QuickSort(aiNum, iTempLeft+1, iRight); 
 }
 
+int* ArraySort(int *nums, int numsSize){
+    int *piReturn = (int*) malloc(sizeof(int) * numsSize);
+    int iLeft = 0, iRight = numsSize - 1;
+
+    for(int i = 0; i < numsSize; ++i){
+        piReturn[i] = nums[i];
+    }
+
+    QuickSort(piReturn, iLeft, iRight);
+
+    return piReturn;
+}
+
+int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    int **ppaiReturnArray = NULL;
+    int iReturnSize = 0;
+    int* iSortNums = ArraySort(nums, numsSize);
+
+    // for(int i = 0; i < 6; ++i){
+    //     printf("%d , " , iSortNums[i]);
+    // }
+    // printf("\n");
+
+    if(numsSize < 3){
+        return NULL;
+    }
+
+    ppaiReturnArray = (int**) malloc(sizeof(int*) * numsSize * 6);
+
+    
+    for(int i = 0; i < numsSize; ){
+        int iBase = iSortNums[i];
+        int iLeft = i + 1, iRight = numsSize - 1;
+
+        while(iLeft < iRight){
+            while(iBase + iSortNums[iLeft] + iSortNums[iRight] > 0 && iLeft < iRight){
+                --iRight;
+            }
+            while(iBase + iSortNums[iLeft] + iSortNums[iRight] < 0 && iLeft < iRight){
+                ++iLeft;
+            }
+            if(iBase + iSortNums[iLeft] + iSortNums[iRight] == 0 && iLeft != iRight){
+                ppaiReturnArray[iReturnSize] = (int*)malloc(sizeof(int) * 3);
+                ppaiReturnArray[iReturnSize][0] = iBase;
+                ppaiReturnArray[iReturnSize][1] = iSortNums[iLeft];
+                ppaiReturnArray[iReturnSize][2] = iSortNums[iRight];
+                iReturnSize++;
+            }
+            ++iLeft;
+            --iRight;
+        }
+
+        while(iSortNums[++i] == iBase);
+    }
+
+    // *returnSize = numsSize;
+    // **returnColumnSizes = iReturnSize;
+    *returnSize = iReturnSize;
+
+    *returnColumnSizes = (int*) malloc(sizeof(int) * 6 * numsSize);
+    for(int i = 0; i < iReturnSize; ++i){
+        (*returnColumnSizes)[i] = 3;
+    }
+
+    free(iSortNums);
+
+    return ppaiReturnArray;    
+}
+
+int main(){
+    int a[] = {-1, 0, 1, 2, -1, -4};
+    int *iReturnSize = (int*)malloc(sizeof(int));
+    int *iReturnColumnSizes = (int*)malloc(sizeof(int));
+
+    int **pp3Sum = threeSum(a, 6, iReturnSize, &iReturnColumnSizes);
+
+    for(int i = 0; i < *iReturnColumnSizes; ++i){
+        for(int j = 0; j < 3; ++j){
+            printf("%d  ", pp3Sum[i][j]);
+        }
+        printf("\n");    
+    }
+
+    for(int i = 0; i < *iReturnColumnSizes; ++i){
+        free(pp3Sum[i]);
+    }
+
+    free(pp3Sum);
+
+    // for(int i = 0; i < 6; ++i){
+    //     printf("%d , " , a[i]);
+    // }
+
+    printf("\n");
+
+    return 0;
+}
 
 // @lc code=end
 
