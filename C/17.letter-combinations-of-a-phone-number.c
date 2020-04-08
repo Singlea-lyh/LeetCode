@@ -146,7 +146,7 @@ char ** letterCombinations(char * digits, int* returnSize){
 }
 
 int main(){
-    char pacDigits[] = "23";
+    char pacDigits[] = "234";
     int iReturnSize = 1;
     char** ppacReturn = letterCombinations(pacDigits, &iReturnSize);
 
