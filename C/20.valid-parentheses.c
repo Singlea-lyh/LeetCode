@@ -74,12 +74,78 @@
 #define false 0
 
 bool isValid(char * s){
+    bool bIsReturn = true;
+    int iSLen = strlen(s);
+    char* paSTemp = (char*)malloc(sizeof(char) * (iSLen + 1));
+    int iHead = 0;
+    int iTemp = 0;
 
+    if(iSLen == 1){
+        return false;
+    }
+    if(iSLen == 0){
+        return true;
+    }
+
+    while(iTemp < iSLen){
+        if(s[iTemp] == '(' || s[iTemp] == '[' || s[iTemp] == '{'){
+            paSTemp[iHead++] = s[iTemp++];
+        }
+        else if(s[iTemp] == ')'){
+            if(iHead > 0 && paSTemp[iHead - 1] == '('){
+                --iHead;
+                ++iTemp;
+            }
+            else{
+                bIsReturn = false;
+                break;
+            }
+        }
+        else if(s[iTemp] == ']'){
+            if(iHead > 0 && paSTemp[iHead - 1] == '['){
+                --iHead;
+                ++iTemp;
+            }
+            else{
+                bIsReturn = false;
+                break;
+            } 
+        }
+        else if(s[iTemp] == '}'){
+            if(iHead > 0 && paSTemp[iHead - 1] == '{'){
+                --iHead;
+                ++iTemp;
+            }
+            else{
+                bIsReturn = false;
+                break;
+            } 
+        }
+    }
+
+    if(iHead > 0){
+        bIsReturn = false;
+    }
+
+    free(paSTemp);
+    return bIsReturn;
 }
 
 
 int main(){
-    
+    char acParenthese[] = "((";
+    bool bIsReturn = false;
+
+    bIsReturn = isValid(acParenthese);
+
+    if(bIsReturn){
+        printf("true\n");
+    }
+    else{
+        printf("false\n");
+    } 
+
+    return 0;    
 }
 
 
