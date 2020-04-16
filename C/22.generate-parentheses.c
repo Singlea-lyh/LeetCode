@@ -68,7 +68,6 @@ void dfsgenerate(int iParentheses, int iLeft, int iRight, int iIndex, int *piRet
     }
 }
 
-
 char ** generateParenthesis(int n, int* returnSize){
     char** ppacReturn = (char**)malloc(sizeof(char*) * 5000);
     char* pacItem = (char*) malloc(sizeof(char) * (2 * n + 1));
