@@ -49,9 +49,43 @@ typedef struct ListNode{
     struct ListNode *next;
 }ListNode;
 
+struct ListNode* mergeTwoList(struct ListNode* pstList1, struct ListNode* pstList2){
+    if(pstList1 == NULL){
+        return pstList2;
+    }
+    if(pstList2 == NULL){
+        return pstList1;
+    }
+    if(pstList1->val < pstList2->val){
+        pstList1->next = mergeTwoList(pstList1->next, pstList2);
+        return pstList1;
+    }
+    else{
+        pstList2->next = mergeTwoList(pstList1, pstList2->next);
+        return pstList2;
+    }
+}
+
+struct ListNode* merge(struct ListNode** lists, int iStart, int iEnd){
+    if(iStart == iEnd){
+        return lists[iStart];
+    }
+    int iMid = (iStart + iEnd) / 2;
+
+    struct ListNode* pstLeft = merge(lists, iStart, iMid);
+    struct ListNode* pstRight  = merge(lists, iMid + 1, iEnd);
+    return mergeTwoList(pstLeft, pstRight);
+}
 
 struct ListNode* mergeKLists(struct ListNode** lists, int listsSize){
+    if(listsSize == 0){
+        return NULL;   
+    }
+    if(listsSize == 1){
+        return lists[0];
+    }
 
+    return merge(lists, 0, listsSize - 1);
 }
 
 
