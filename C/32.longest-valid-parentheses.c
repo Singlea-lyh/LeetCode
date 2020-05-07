@@ -31,7 +31,7 @@
  * Output: 4
  * Explanation: The longest valid parentheses substring is "()()"
  * 
- * 
+ * (((()(((()(
  */
 
 // @lc code=start
@@ -56,6 +56,11 @@ int longestValidParentheses(char * s){
     pacStack = (char*)malloc(sizeof(char) * iSLen);
 
     while(i < iSLen){
+        char cTemp = s[i];
+
+        if(cTemp == '('){
+
+        }
 
     }
 
