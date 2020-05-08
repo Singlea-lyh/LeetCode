@@ -46,16 +46,62 @@
 #include <string.h>
 #include <math.h>
 
+int dichotomy(int* nums, int iStart, int iEnd, int iTarget){
+    int iLeft = iStart, iRight = iEnd;
+    int iMid = 0;
+    int iReturn = 0;
+
+    if(iLeft == iRight && nums[iLeft] != iTarget){
+        return -1;
+    }
+    if(nums[iLeft] == iTarget){
+        return iLeft;
+    }
+    else if(nums[iRight] == iTarget){
+        return iRight;
+    }
+    else{
+        iMid = (iLeft + iRight) / 2;
+        if(nums[iMid] == iTarget){
+            return iMid;
+        }
+        else if(nums[iLeft] < nums[iMid] && nums[iLeft] < iTarget && nums[iMid] > iTarget){
+            iReturn = dichotomy(nums, iLeft, iMid - 1, iTarget);
+        }
+        else if(nums[iLeft] < nums[iMid] && (nums[iMid] < iTarget || nums[iLeft] > iTarget)){
+            iReturn = dichotomy(nums, iMid + 1, iRight, iTarget);
+        }
+        else if(nums[iLeft] > nums[iMid] && nums[iMid] < iTarget && nums[iRight] > iTarget){
+            iReturn = dichotomy(nums, iMid + 1, iRight, iTarget);
+        }
+        else if(nums[iLeft] > nums[iMid] && (nums[iMid] > iTarget || nums[iRight] < iTarget)){
+            iReturn = dichotomy(nums, iLeft, iMid - 1, iTarget);
+        }
+        else{
+            iReturn = dichotomy(nums, iMid + 1, iRight, iTarget);
+        }
+    }
+
+    return iReturn;
+}
+
 int search(int* nums, int numsSize, int target){
+    int iReturn = 0;
 
+    if(numsSize < 1){
+        return -1;
+    }
 
+    iReturn = dichotomy(nums, 0, numsSize - 1, target);
+
+    return iReturn;
 }
 
 
 int main(){
     int aiNums[] = {4,5,6,7,0,1,2};
     int iNumsSize = 7;
-    int iTarget = 0;
+    int iTarget = 3;
     int iReturn = 0;
 
     iReturn = search(aiNums, iNumsSize, iTarget);
