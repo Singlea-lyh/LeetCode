@@ -42,7 +42,7 @@
 //     int iLeft = iStart;
 //     int iRight = iEnd;
 
-//     if(iLeft >= iRight){
+//     if(iLeft > iRight){
 //         return;
 //     }
     
