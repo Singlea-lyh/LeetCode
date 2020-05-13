@@ -53,23 +53,228 @@
 #define true 1
 #define false 0
 
-void solveSudoku(char** board, int boardSize, int* boardColSize){
+#define N 9
 
+void placeNextNum(char ppcBoard[][9], int iRow, int iCol);
+// void placeNextNum(char** ppcBoard, int iRow, int iCol);
+
+char aiRows[N][N + 1] = {0};
+char aiCols[N][N + 1] = {0};
+char aiBoxs[N][N + 1] = {0};
+
+bool bIsSolve = false;
+
+// void placeNum(char** ppcBoard, int iNum, int iRow, int iCol){
+//     int iBoxIndex = (iRow / 3) * 3 + (iCol / 3);
+
+//     aiRows[iRow][iNum]++;
+//     aiCols[iCol][iNum]++;
+//     aiBoxs[iBoxIndex][iNum]++;
+//     ppcBoard[iRow][iCol] = (char)iNum;
+
+//     return;
+// }
+
+// bool couldPlace(int iNum, int iRow, int iCol){
+//     int iBoxIndex = (iRow / 3) * 3 + (iCol / 3);
+
+//     if(aiRows[iRow][iNum] || aiCols[iCol][iNum] || aiBoxs[iBoxIndex][iNum]){
+//         return false;
+//     }
+//     else{
+//         return true;
+//     }
+// }
+
+// void removeNum(char** ppcBoard, int iNum, int iRow, int iCol){
+//     int iBoxIndex = (iRow / 3) * 3 + (iCol / 3);
+
+//     aiRows[iRow][iNum]--;
+//     aiCols[iCol][iNum]--;
+//     aiBoxs[iBoxIndex][iNum]--;
+//     ppcBoard[iRow][iCol] = '.';
+
+//     return;
+// }
+
+// void backtrace(char** ppcBoard, int iRow, int iCol){
+
+//     if(ppcBoard[iRow][iCol] == '.'){
+//         for(int i = 1; i < 10; ++i){           
+//             int iNum = i;
+//             if(couldPlace(iNum, iRow, iCol)){
+//                 placeNum(ppcBoard, iNum, iRow, iCol);
+//                 placeNextNum(ppcBoard, iRow, iCol);
+//                 if(!bIsSolve) removeNum(ppcBoard, iNum, iRow, iCol);
+//             }
+//         }
+//     }
+//     else{
+//         placeNextNum(ppcBoard, iRow, iCol);
+//     }
+    
+//     return;
+// }
+
+// void placeNextNum(char** ppcBoard, int iRow, int iCol){
+//     if(iRow == N - 1 && iCol == N - 1){
+//         bIsSolve = true;
+//     }
+//     else{
+//         if(iCol == N -1){
+//             backtrace(ppcBoard, iRow + 1, 0);            
+//         }
+//         else{
+//             backtrace(ppcBoard, iRow, iCol + 1);
+//         }
+//     }
+//     return;
+// }
+
+
+// void solveSudoku(char** board, int boardSize, int* boardColSize){
+//     for(int i = 0; i < N; ++i){
+//         for(int j = 0; j < N; ++j){
+//             char cNum = board[i][j];
+//             if(cNum != '.'){
+//                 int iNum = board[i][j] - '0';
+//                 placeNum(board, iNum, i, j);
+//             }
+//         }
+//     }
+//     backtrace(board, 0, 0);
+
+//     return;
+// }
+
+
+void placeNum(char ppcBoard[][9], int iNum, int iRow, int iCol){
+    int iBoxIndex = (iRow / 3) * 3 + (iCol / 3);
+
+    aiRows[iRow][iNum] = 1;
+    aiCols[iCol][iNum] = 1;
+    aiBoxs[iBoxIndex][iNum] = 1;
+    ppcBoard[iRow][iCol] = (char)(iNum + '0');
+
+    return;
+}
+
+bool couldPlace(int iNum, int iRow, int iCol){
+    int iBoxIndex = (iRow / 3) * 3 + (iCol / 3);
+
+    if(aiRows[iRow][iNum] || aiCols[iCol][iNum] || aiBoxs[iBoxIndex][iNum]){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+void removeNum(char ppcBoard[][9], int iNum, int iRow, int iCol){
+    int iBoxIndex = (iRow / 3) * 3 + (iCol / 3);
+
+    aiRows[iRow][iNum] = 0;
+    aiCols[iCol][iNum] = 0;
+    aiBoxs[iBoxIndex][iNum] = 0;
+    ppcBoard[iRow][iCol] = '.';
+
+    return;
+}
+
+void backtrace(char ppcBoard[][9], int iRow, int iCol){
+
+    if(ppcBoard[iRow][iCol] == '.'){
+        for(int i = 1; i < 10; ++i){           
+            int iNum = i;
+            if(couldPlace(iNum, iRow, iCol)){
+                placeNum(ppcBoard, iNum, iRow, iCol);
+                placeNextNum(ppcBoard, iRow, iCol);
+
+                if(!bIsSolve) removeNum(ppcBoard, iNum, iRow, iCol);
+            }
+        }
+    }
+    else{
+        placeNextNum(ppcBoard, iRow, iCol);
+    }
+    
+    return;
+}
+
+void placeNextNum(char ppcBoard[][9], int iRow, int iCol){
+    if(iRow == N - 1 && iCol == N - 1){
+        bIsSolve = true;
+    }
+    else{
+        if(iCol == N -1){
+            backtrace(ppcBoard, iRow + 1, 0);            
+        }
+        else{
+            backtrace(ppcBoard, iRow, iCol + 1);
+        }
+    }
+    return;
 }
 
 
+void solveSudoku(char board[][9], int boardSize, int* boardColSize){
+
+    if(boardSize < 9){
+        return;
+    }
+    
+    
+    for(int i = 0; i < boardSize; ++i){
+        for(int j = 0; j < boardColSize[i]; ++j){
+            char cNum = board[i][j];
+            if(cNum != '.'){
+                int iNum = cNum;
+                placeNum(board, iNum, i, j);
+            }
+        }
+    }
+    backtrace(board, 0, 0);
+
+    for(int i = 0; i < N; ++i){
+        for(int j = 0; j < N; ++j){
+            printf("%c, ", board[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("*****************************\n");
+
+    
+
+    return;
+}
+
+
+
 int main(){
+    // char pacInput[9][9] ={
+    //     {5,3,'.','.',7,'.','.','.','.'},
+    //     {6,'.','.',1,9,5,'.','.','.'},
+    //     {'.',9,8,'.','.','.','.',6,'.'},
+    //     {8,'.','.','.',6,'.','.','.',3},
+    //     {4,'.','.',8,'.',3,'.','.',1},
+    //     {7,'.','.','.',2,'.','.','.',6},
+    //     {'.',6,'.','.','.','.',2,8,'.'},
+    //     {'.','.','.',4,1,9,'.','.',5},
+    //     {'.','.','.','.',8,'.','.',7,9}
+    // } ; 
     char pacInput[9][9] ={
-        {5,3,'.','.',7,'.','.','.','.'},
-        {6,'.','.',1,9,5,'.','.','.'},
-        {'.',9,8,'.','.','.','.',6,'.'},
-        {8,'.','.','.',6,'.','.','.',3},
-        {4,'.','.',8,'.',3,'.','.',1},
-        {7,'.','.','.',2,'.','.','.',6},
-        {'.',6,'.','.','.','.',2,8,'.'},
-        {'.','.','.',4,1,9,'.','.',5},
-        {'.','.','.','.',8,'.','.',7,9}
-    } ; 
+            {'.','.',9,7,4,8,'.','.','.'},
+            {7,'.','.','.','.','.','.','.','.'},
+            {'.',2,'.',1,'.',9,'.','.','.'},
+            {'.','.',7,'.','.','.',2,4,'.'},
+            {'.',6,4,'.',1,'.',5,9,'.'},
+            {'.',9,8,'.','.','.',3,'.','.'},
+            {'.','.','.',8,'.',3,'.',2,'.'},
+            {'.','.','.','.','.','.','.','.',6},
+            {'.','.','.',2,8,7,5,'.','.'}
+        } ;
+
     // char **ppBoard = (char**)pacInput;
     int iBoardSize = 9;
     int aiBoardColSize[] = {9,9,9,9,9,9,9,9,9}; 
@@ -85,7 +290,12 @@ int main(){
 
     solveSudoku(pacInput, iBoardSize, aiBoardColSize);
 
-    printf("%d\n", bIsReturn);
+    for(int i = 0; i < N; ++i){
+        for(int j = 0; j < N; ++j){
+            printf("%c, ", pacInput[i][j]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
