@@ -28,11 +28,21 @@ class Solution(object):
             if nums[nums[i]] == nums[i]:
                  return nums[i]
             nums[nums[i]], nums[i] = nums[i], nums[nums[i]]
-                   
+
+    def findRepeatNumberCounter(self, nums): 
+        from collections import Counter   
+        NumsCounter = Counter(nums) 
+        print(type(NumsCounter)) 
+        NumsDict = dict(NumsCounter)
+        print(NumsDict)
+        for k, v in NumsCounter.items():
+            if v > 1:
+                return k        
            
 
 if __name__ == "__main__":
     nums = [2, 3, 1, 0, 2, 5, 3]
     repeatnum = Solution()
     print(repeatnum.findRepeatNumber(nums))
+    print(repeatnum.findRepeatNumberCounter(nums))
             
