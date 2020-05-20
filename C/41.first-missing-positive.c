@@ -50,13 +50,58 @@
 #include <math.h>
 
 int firstMissingPositive(int* nums, int numsSize){
+    int i = 0;
+    
+    if(numsSize < 1){
+        return 1;
+    }
+    if(numsSize == 1 && nums[0] == 1){
+        return 2;
+    }
 
+    for(i = 0; i < numsSize; ++i){
+        if(nums[i] == 1){
+            break;
+        }        
+    }
+    if(i == numsSize){
+        return 1;
+    }
+    for(i = 0; i < numsSize; ++i){
+        if(nums[i] == 0 || nums[i] < 0 || nums[i] > numsSize){
+            nums[i] = 1;
+        }
+    }
+
+
+    for(i = 0; i < numsSize; ++i){
+        int iIndex = (nums[i] < 0)? (-nums[i]) :nums[i];
+        if(nums[iIndex % numsSize] < 0){
+            continue;
+        }
+        else{
+            nums[iIndex % numsSize] *= (-1);
+        }
+    }
+
+    for(i = 1; i < numsSize; ++i){
+        if(nums[i] > 0){
+            return i;
+        }        
+    }
+
+
+    if(i == numsSize && nums[0] > 0){
+        return numsSize;
+    }
+    
+    return numsSize + 1;
 }
 
 int main(){
     int iReturn = 0;
-    int aiNum[] = {};
-    int iNumSize = 0;
+    int aiNum[] = {1,2,3,4,5};
+    int iNumSize = 5;
 
     iReturn = firstMissingPositive(aiNum, iNumSize);
 
