@@ -36,16 +36,109 @@
 #include <string.h>
 #include <math.h>
 
-int trap(int* height, int heightSize){
+int recurrence(int* piHeight, int iLeft, int iRight){
+    int iReturn = 0;
+    int iHeight = 0;
+    int iLength = 0;
+    int iStart = iLeft, iEnd = iRight;
 
+    if(iEnd - iStart <= 1){
+        return 0;
+    }
+
+    iHeight = (piHeight[iStart] <= piHeight[iEnd])? piHeight[iStart]: piHeight[iEnd];
+    iLength = iEnd - iStart - 1;
+    iReturn = iHeight * iLength;
+
+    if(piHeight[iStart] <= piHeight[iEnd]){
+        while (iStart < iEnd + 1){
+            if(iStart == iLeft || iStart == iEnd){
+                piHeight[iStart] -= iHeight;
+                ++iStart;
+                continue;
+            }
+            else{
+                if(piHeight[iStart] > 0){
+                    iReturn -= ((iHeight < piHeight[iStart])? iHeight : piHeight[iStart]);
+                    if(piHeight[iStart] >= iHeight){
+                        piHeight[iStart] -= iHeight;
+                    }
+                    else{
+                        piHeight[iStart] = 0;
+                    }    
+                }
+                ++iStart;
+            } 
+        }        
+    }
+    else{
+        while ((iStart - 1) < iEnd){
+            if(iEnd == iRight  || iEnd == iStart){
+                piHeight[iEnd] -= iHeight;
+                --iEnd;
+                continue;
+            }
+            else{
+                if(piHeight[iEnd] > 0){
+                    iReturn -= ((iHeight < piHeight[iEnd])? iHeight : piHeight[iEnd]);
+                    if(piHeight[iEnd] >= iHeight){
+                        piHeight[iEnd] -= iHeight;
+                    }
+                    else{
+                        piHeight[iEnd] = 0;
+                    }
+                }     
+                --iEnd;
+            }  
+        }        
+
+    }
+
+    iStart = iLeft;
+    iEnd = iRight;
+
+    while((iEnd - iStart > 1) &&  piHeight[iStart] == 0){
+        ++iStart;
+    }
+    while((iEnd - iStart > 1) &&  piHeight[iEnd] == 0){
+        --iEnd;
+    }
+
+    iReturn += recurrence(piHeight, iStart, iEnd);
+
+    return iReturn;
+}
+
+
+int trap(int* height, int piHeightSize){
+    int iStart = 0;
+    int iEnd = piHeightSize - 1;
+    int iPreEnd = 0;
+    int iTotle = 0;
+    int iReturn = 0;
+    
+    if(piHeightSize < 3){
+        return iReturn;
+    }
+
+    while((iEnd - iStart > 1) &&  height[iStart] == 0){
+        ++iStart;
+    }
+    while((iEnd - iStart > 1) &&  height[iEnd] == 0){
+        --iEnd;
+    }
+
+    iReturn += recurrence(height, iStart, iEnd);
+
+    return iReturn;
 }
 
 int main(){
     int iReturn = 0;
-    int* aiHeight[] = {};
-    int iHeightSize = 0;
+    int pipiHeight[] = {4,2,3};
+    int ipiHeightSize = 3;
 
-    iReturn = trap(aiHeight, iHeightSize);
+    iReturn = trap(pipiHeight, ipiHeightSize);
 
     printf("%d\n", iReturn);
 
