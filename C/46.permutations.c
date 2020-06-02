@@ -45,15 +45,66 @@
 #include <string.h>
 #include <math.h>
 
+void backtrack(int *piNums, int iNumSize, int iPos, int *piUsed, int *piPath, 
+                int *piReturnSize, int **ppiReturn, int *piReturnCol ){
+
+    if(iPos == iNumSize){
+        ppiReturn[*piReturnSize] = (int*)malloc(sizeof(int) * iNumSize);
+        memset(ppiReturn[*piReturnSize], 0, sizeof(int) * iNumSize);
+        memcpy(ppiReturn[*piReturnSize], piPath, sizeof(int) * iNumSize);
+        piReturnCol[*piReturnSize] = iNumSize;
+        ++(*piReturnSize);
+    }
+
+    for(int i = 0; i < iNumSize; ++i){
+        if(!piUsed[i]){
+            piUsed[i] = 1;
+            piPath[iPos] = piNums[i];
+            backtrack(piNums, iNumSize, iPos + 1, piUsed, piPath, piReturnSize, ppiReturn, piReturnCol);
+            piUsed[i] = 0;
+        }
+
+    }
+
+}
+
+
 
 int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    int iRetrunSize = 1;
+    int **ppiRetrun = NULL;
+    int *piReturnCol = NULL;
+    int *piUsed = NULL;
+    int *piPath = NULL;
 
+    for(int i = 1; i <= numsSize; ++i){
+        iRetrunSize *= i;
+    }
+
+    ppiRetrun = (int**)malloc(sizeof(int*) * iRetrunSize);
+    piReturnCol = (int*)malloc(sizeof(int) * iRetrunSize);
+    memset(ppiRetrun, 0, sizeof(int*) * iRetrunSize);
+    memset(piReturnCol, 0, sizeof(int) * iRetrunSize);
+
+    piUsed = (int*)malloc(sizeof(int) * numsSize);
+    piPath = (int*)malloc(sizeof(int) * numsSize);
+    memset(piUsed, 0, sizeof(int) * numsSize);
+    memset(piPath, 0, sizeof(int) * numsSize);
+
+    iRetrunSize = 0;
+
+    backtrack(nums, numsSize, 0, piUsed, piPath, &iRetrunSize, ppiRetrun, piReturnCol);
+
+    *returnColumnSizes = piReturnCol;
+    *returnSize = iRetrunSize;
+    
+    return ppiRetrun;
 }
 
 int main(){
     int **ppiReturn = NULL;
-    int piNums[] = {};
-    int iNumSize = 0;
+    int piNums[] = {1,2,3};
+    int iNumSize = 3;
     int iReturnSize = 0;
     int *piReturnCol = NULL;
 
@@ -69,7 +120,6 @@ int main(){
         free(ppiReturn[i]);
     }
     free(ppiReturn);
-
     free(piReturnCol);
 
     return 0;
