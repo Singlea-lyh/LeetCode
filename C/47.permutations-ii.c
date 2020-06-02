@@ -50,7 +50,7 @@ int main(){
     int **ppiReturn = NULL;
     int piNums[] = {1,2,3};
     int iNumSize = 3;
-    int iReturnSize = 0;b
+    int iReturnSize = 0;
     int *piReturnCol = NULL;
 
     ppiReturn = permuteUnique(piNums, iNumSize, &iReturnSize, &piReturnCol);
