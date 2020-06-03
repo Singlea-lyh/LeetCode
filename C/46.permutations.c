@@ -54,6 +54,7 @@ void backtrack(int *piNums, int iNumSize, int iPos, int *piUsed, int *piPath,
         memcpy(ppiReturn[*piReturnSize], piPath, sizeof(int) * iNumSize);
         piReturnCol[*piReturnSize] = iNumSize;
         ++(*piReturnSize);
+        return;
     }
 
     for(int i = 0; i < iNumSize; ++i){
@@ -67,8 +68,6 @@ void backtrack(int *piNums, int iNumSize, int iPos, int *piUsed, int *piPath,
     }
 
 }
-
-
 
 int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
     int iRetrunSize = 1;
@@ -92,7 +91,6 @@ int** permute(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)
     memset(piPath, 0, sizeof(int) * numsSize);
 
     iRetrunSize = 0;
-
     backtrack(nums, numsSize, 0, piUsed, piPath, &iRetrunSize, ppiRetrun, piReturnCol);
 
     *returnColumnSizes = piReturnCol;
