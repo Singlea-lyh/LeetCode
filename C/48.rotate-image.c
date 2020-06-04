@@ -70,8 +70,25 @@
 #include <math.h>
 
 void rotate(int** matrix, int matrixSize, int* matrixColSize){
+    if(matrixSize == 0 || matrixSize == 1){
+        return;
+    }
 
+    for(int i = 0; i < matrixSize; ++i){
+        for(int j = i; j < matrixSize; ++j){
+            int iTemp = matrix[j][i];
+            matrix[j][i] = matrix[i][j];
+            matrix[i][j] = iTemp;
+        }
+    }
 
+    for(int i = 0; i < matrixSize; ++i){
+        for(int j = 0; j < matrixSize / 2; ++j){
+            int iTemp = matrix[i][j];
+            matrix[i][j] = matrix[i][matrixSize - j - 1];
+            matrix[i][matrixSize-j-1] = iTemp;
+        }
+    }
 
     return;
 }
