@@ -52,14 +52,131 @@
 #include <string.h>
 #include <math.h>
 
-double myPow(double x, int n){
+// double recurrence(double dNum, int iPown){
+//     if(iPown == 0){
+//         return 1.0;
+//     }
+//     double dReturn = recurrence(dNum, iPown / 2); 
+//     if(iPown % 2 == 1){
+        
+//         return dNum * dReturn * dReturn;
+//     }
+//     else{
+//         return dReturn * dReturn;
+//     }
+// }
 
+// double myPow(double x, int n){
+//     double dReturn = 1.0;
+//     double dNum = 0.0;
+//     int iPow = 0;
+
+//     if(n == 0){
+//         return 1.0;
+//     }
+//     if(x == 0){
+//         return 0.0;
+//     }
+//     else if(x == 1){
+//         return 1;
+//     }
+//     else if(x == -1){
+//         if(n % 2){
+//             return -1.0;            
+//         }
+//         else{
+//             return 1.0;
+//         }
+        
+//     }
+//     if(n < 0){
+//         dNum = (1 / x);
+//         if(n == -2147483648){
+//             dReturn = dNum;
+//             iPow = -(n + 1);
+//         }  
+//         else
+//         {
+//             iPow = -n;
+//         }
+//     }
+//     else{
+//         dNum = x;
+//         iPow = n;
+//    }
+
+//     dReturn *= recurrence(dNum, iPow);
+
+//     return dReturn;
+// }
+
+double interation(double dNum, int iPown){
+      double dReturn = 1.0;
+      double dTemp = dNum;
+
+      while (iPown > 0){
+          if(iPown % 2 == 1){
+              dReturn *= dTemp;
+          }
+          dTemp *= dTemp;
+          iPown /= 2;
+      }
+
+      return dReturn;      
 }
+
+double myPow(double x, int n){
+    double dReturn = 1.0;
+    double dNum = 0.0;
+    int iPow = 0;
+
+    if(n == 0){
+        return 1.0;
+    }
+    if(x == 0){
+        return 0.0;
+    }
+    else if(x == 1){
+        return 1;
+    }
+    else if(x == -1){
+        if(n % 2){
+            return -1.0;            
+        }
+        else{
+            return 1.0;
+        }
+        
+    }
+    if(n < 0){
+        dNum = (1 / x);
+        if(n == -2147483648){
+            dReturn = dNum;
+            iPow = -(n + 1);
+        }  
+        else
+        {
+            iPow = -n;
+        }
+    }
+    else{
+        dNum = x;
+        iPow = n;
+   }
+
+    dReturn *= interation(dNum, iPow);
+
+    return dReturn;
+}
+
+
 
 int main(){
     double dReturn = 0;
     double dNum = 2;
-    int iPow = 10;
+    int iPow = -2147483648;
+    //  int iPow = 10;
+
 
     dReturn = myPow(dNum, iPow);
 
