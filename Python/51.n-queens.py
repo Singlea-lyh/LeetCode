@@ -46,8 +46,70 @@
 #
 
 # @lc code=start
+
+import os
 class Solution:
-    def solveNQueens(self, n: int) -> List[List[str]]:
+    def solveNQueens(self, n: int) -> list:
+        def could_place(row, col):
+            return not (cols[col] + add_diag[row + col] + sub_diag[row - col])
         
+        def place_queen(row, col):
+            queen.add((row, col))
+            cols[col] = 1
+            add_diag[row + col] = 1
+            sub_diag[row - col] = 1
+        
+        def remove_queen(row, col):
+            queen.remove((row, col))
+            cols[col] = 0
+            add_diag[row + col] = 0
+            sub_diag[row - col] = 0
+        
+        def add_solution():
+            solve = []
+            for _, col in sorted(queen):
+                solve.append("." * col + "Q" + "." * (n - col - 1))
+            output.append(solve)
+
+        def backtrack(row = 0):
+            for col in range(n):
+                if could_place(row, col):
+                    place_queen(row, col)
+                    if row + 1 == n:
+                        add_solution()
+                    else:
+                        backtrack(row + 1)
+                    remove_queen(row, col)
+        
+        cols = [0] * n
+        add_diag = [0] * (2 * n - 1)
+        sub_diag = [0] * (2 * n - 1)
+        queen = set()
+        output = []
+        backtrack()       
+        return output
+
+# class Solution:
+#     def test(self, n):
+#         input = [0] * n
+#         return input
+
+if __name__ == "__main__":
+    nqueen = Solution()
+    ret = nqueen.solveNQueens(4)
+    for i in ret:
+        print("[", end = "")
+        for j in i:
+            print(j)
+        print("]")
+
+        
+    # print(nqueen.solveNQueens(4)) 
+
+
+
+
+
+
 # @lc code=end
 
