@@ -44,9 +44,39 @@
 #
 
 # @lc code=start
+
+import os
 class Solution:
-    def totalNQueens(self, n: int) -> int:
-        return n
+    def totalNQueens(self, n: int) -> int:  
+        def could_place(row, col):
+            return not (cols[col] or add_diga[row + col] or sub_diga[row - col])
+        
+        def queen_palce(row, col):
+            cols[col] = 1
+            add_diga[row + col] = 1
+            sub_diga[row - col] = 1
+        
+        def queen_remove(row, col):
+            cols[col] = 0
+            add_diga[row + col] = 0
+            sub_diga[row - col] = 0
+        
+        def backtrack(row = 0, ret = 0):
+            if row == n:
+                ret +=  1
+                return ret
+            
+            for col in range(n):
+                if could_place(row, col):
+                    queen_palce(row, col)
+                    ret = backtrack(row + 1, ret)
+                    queen_remove(row, col)
+            return ret
+        
+        cols = [0] * n
+        add_diga = [0] * (2 * n -1)
+        sub_diga = [0] * (2 * n - 1)
+        return backtrack()
 
 
 if __name__ == "__main__":
