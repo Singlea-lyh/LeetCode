@@ -40,31 +40,44 @@
 class Solution:
     def merge(self, intervals: list) -> list:
         ret = []
-        numlen = len(intervals)
 
-        if not intervals:
-            return ret
+        intervals.sort(key = lambda x : x[0])
+        # aftersorted = sorted(intervals, key = lambda x: x[0])
+
+        for interval in intervals:
+            if not ret or interval[0] > ret[-1][1]:
+                ret.append(interval) 
+            else:
+                ret[-1][1] = max(interval[1], ret[-1][1]) 
+
+        return ret      
         
-        intervals.sort(key=lambda x: x[0])
+        # ret = []
+        # numlen = len(intervals)
 
-        low , high =  intervals[0][0], intervals[0][1]
+        # if not intervals:
+        #     return ret
+        
+        # intervals.sort(key=lambda x: x[0])
 
-        for idx in range(1, numlen):
-            if intervals[idx][0] > high or intervals[idx][1] < low:
-                temp = [low, high]
-                ret.append(temp)
-                low, high = intervals[idx][0], intervals[idx][1]
-            elif intervals[idx][0] < low and intervals[idx][1] > high:
-                low,high = intervals[idx][0], intervals[idx][1]
-            elif intervals[idx][0] >= low  and intervals[idx][1] >= high:
-                high = intervals[idx][1]
-            elif intervals[idx][0] < low and intervals[idx][1] <= high:
-                low = intervals[idx][0]
+        # low , high =  intervals[0][0], intervals[0][1]
+
+        # for idx in range(1, numlen):
+        #     if intervals[idx][0] > high or intervals[idx][1] < low:
+        #         temp = [low, high]
+        #         ret.append(temp)
+        #         low, high = intervals[idx][0], intervals[idx][1]
+        #     elif intervals[idx][0] < low and intervals[idx][1] > high:
+        #         low,high = intervals[idx][0], intervals[idx][1]
+        #     elif intervals[idx][0] >= low  and intervals[idx][1] >= high:
+        #         high = intervals[idx][1]
+        #     elif intervals[idx][0] < low and intervals[idx][1] <= high:
+        #         low = intervals[idx][0]
        
-        temp = [low, high]
-        ret.append(temp)
+        # temp = [low, high]
+        # ret.append(temp)
 
-        return ret
+        # return ret
 
 
 if __name__ == "__main__":
