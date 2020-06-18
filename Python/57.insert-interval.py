@@ -42,59 +42,63 @@
 # @lc code=start
 class Solution:
     def insert(self, intervals: list, newInterval: list) -> list:
-        ret = []
-        temp = []
-        ismatch = True
-        # intervalslen = len(intervals)
-        intervals.sort(key = lambda x : x [0])
-        print(intervals)
+        # ret = []
+        # temp = []
+        # ismatch = True
+        # # intervalslen = len(intervals)
+        # intervals.sort(key = lambda x : x [0])
+        # print(intervals)
 
-        left , right = newInterval[0], newInterval[1]
+        # left , right = newInterval[0], newInterval[1]
         
+        # if not intervals:
+        #     ret.append(newInterval)
+        #     return ret
+
+        # for interval in intervals:
+        #     if interval[1] < newInterval[0]:
+        #         ret.append(interval)
+            
+        #     if ismatch:
+        #         if interval[1] >= left : left = min(left, interval[0])
+        #         if interval[0] <= right : right = max(right, interval[1])
+        #         if interval[0] > right or interval == intervals[-1]:
+        #             ret.append([left, right])
+        #             ismatch = False
+        #     if interval[0] > newInterval[1]:
+        #         ret.append(interval)
+
+        # return ret
+
+        ret = []
+        new_left, new_right = newInterval
+
         if not intervals:
             ret.append(newInterval)
             return ret
+        numlen = len(intervals)
+
+        idx = 0
         
-        # for interval in intervals:
-        #     if (len(temp) != 1) and (interval[0] > newInterval[1] or  interval[1] < newInterval[0] 
-        #                             or interval[0] <= newInterval[0] <= newInterval[1] <= interval[1]):
-        #         ret.append(interval)
-        #     elif len(temp) == 1 and interval[0] > newInterval[1]:
-        #         temp.append(newInterval[1])
-        #         ret.append(temp)
-        #         ret.append(interval)
-        #     elif interval[0] < newInterval[0] <= interval[1]:
-        #         temp.append(interval[0])
-        #     elif len(temp) == 0 and interval[0] > newInterval[0]:
-        #         temp.append(newInterval[0])
-        #         if interval[1] >= newInterval[1]:
-        #             temp.append(interval[1])
-        #             ret.append(temp)
-        #     elif len(temp) == 1 and interval[0] <= newInterval[1] <= interval[1]:
-        #         temp.append(interval[1])
-        #         ret.append(temp)
-        #     elif ret[-1][1] < 
-        for interval in intervals:
-            if interval[1] < newInterval[0]:
-                ret.append(interval)
-            
-            if ismatch:
-                if interval[1] >= left : left = min(left, interval[0])
-                if interval[0] <= right : right = max(right, interval[1])
-                if interval[0] > right or interval == intervals[-1]:
-                    ret.append([left, right])
-                    ismatch = False
-            if interval[0] > newInterval[1]:
-                ret.append(interval)
+        while idx < numlen and intervals[idx][0] < new_left:
+            ret.append(intervals[idx])
+            idx += 1
         
-            
-        # if len(temp) == 1:
-        #     temp.append(newInterval[1])
-        #     ret.append(temp)
-        # elif len(temp) == 0:
-        #     ret.append(newInterval)
+        if not ret or ret[-1][1] < new_left:
+            ret.append(newInterval)
+        else:
+            ret[-1][1] = max(ret[-1][1], new_right)
+        
+        while idx < numlen:
+            left, right = intervals[idx]
+            idx += 1
+            if ret[-1][1] < left:
+                ret.append([left, right])
+            else:
+                ret[-1][1] = max(ret[-1][1], right)
 
         return ret
+
 
 
 if __name__ == "__main__":
