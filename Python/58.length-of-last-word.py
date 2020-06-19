@@ -36,13 +36,30 @@
 # @lc code=start
 class Solution:
     def lengthOfLastWord(self, s: str) -> int:
-        ret = 0 
+        # ret = []
+        # ret = s.split()
+        # if len(s) == 0  or not ret: 
+        #     return 0
 
-        return ret
+        # return len(ret[-1])
+
+        numlen = len(s)
+        end = numlen - 1
+        while end >= 0 and s[end] == ' ': 
+            end -=1
+        if end < 0:
+            return 0
+        start = end
+
+        while start >= 0 and s[start] != ' ':
+            start -= 1
+        
+        return (end -start)
+        
 
 if __name__ == "__main__":
     solu = Solution()
-    word = "Hello World"
+    word = "a"
     ret = solu.lengthOfLastWord(word)
 
     print(ret)
