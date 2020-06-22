@@ -55,9 +55,60 @@
 # @lc code=start
 class Solution:
     def getPermutation(self, n: int, k: int) -> str:
+        # ret = []
+        # initstr = ""
+        
+        # for i in range(1, n + 1):
+        #     initstr += str(i) 
+        # ret.append(initstr)
+        
+        # # print(ret)
+
+        # for _ in  range(1, k):
+        #     temp = list(ret[-1])
+        #     numlen = len(temp)
+        #     end = numlen - 1
+
+        #     while end > 0 and temp[end] < temp[end - 1]:
+        #         end -= 1
+        #         # rightmin = rightmin if min(temp[rightmin], temp[end]) == temp[rightmin] else end
+        #     start = end - 1
+        #     rightmin = end
+        #     for idx in range(end, numlen):
+        #         if temp[idx] > temp[start] and temp[idx] < temp[rightmin]:
+        #             rightmin = idx
+                    
+        #     temp[start], temp[rightmin] = temp[rightmin], temp[start] 
+        #     # print(start, end)
+
+        #     part = temp[end:numlen]
+        #     part.sort()
+        #     temp[end:numlen] = part
+        #     # print(temp[end:numlen])
+            
+        #     ret.append(''.join(temp))  
+
+        # return ret[-1]
+
+        factorials, nums = [1], ["1"]
+        for i in range(1, n):
+            factorials.append(factorials[i - 1] * i)
+            nums.append(str(i + 1))
+        
+        print(factorials, nums)
+
+        k -= 1 
+
         ret = []
 
-        return ret
+        for i in range(n-1, -1, -1):
+            idx = k // factorials[i]
+            k -= idx * factorials[i]
+
+            ret.append(nums[idx])
+            del(nums[idx])
+        
+        return "".join(ret)
 
 if __name__ == "__main__":
     solu = Solution()
