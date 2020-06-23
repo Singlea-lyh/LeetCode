@@ -45,13 +45,102 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
+class ListNode:
+    def __init__(self, val = 0, next = None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
     def rotateRight(self, head: ListNode, k: int) -> ListNode:
-        pass
+        # ret = None
+        # listlen = 0
+        # rotatenum = 0
 
+        # if head == None:
+        #     return None
+
+        # temp = head
+        # tail = None
+        # while temp != None:
+        #     listlen += 1
+        #     tail = temp
+        #     temp = temp.next
+
+        
+        # print(listlen)
+        # rotatenum = k % listlen
+
+        # if rotatenum == 0:
+        #     return head
+
+        # idx = 0
+        # temp = head
+        # while idx < (listlen - rotatenum - 1):
+        #     temp = temp.next
+        #     idx += 1
+        # newhead = temp.next
+        
+        # tail.next, temp.next = head, tail.next
+        # ret = newhead
+
+        # return ret
+
+        ret = None
+        listlen = 0
+        
+        if head == None:
+            return head
+        
+        temp = head
+        
+        while temp.next != None:
+            temp = temp.next
+            listlen += 1
+        listlen += 1
+       
+        rotatenum = k % listlen
+        if rotatenum == 0:
+            return head
+        
+        temp.next = head
+
+        temp = head
+        idx = 0
+        while idx < (listlen - rotatenum - 1):
+            temp = temp.next
+            idx += 1
+
+        ret = temp.next
+        temp.next = None
+
+        return ret
 
 if __name__ == "__main__":
-    pass
-        
+    solu = Solution()
+    head = None
+    for i in range(2, -1, -1):
+        temp = ListNode(i,head)
+        # temp.next = head
+        head = temp
+    
+    temp = head
+
+    while temp != None:
+        print(temp.val, end = "->")
+        temp = temp.next
+    print("NULL")
+
+    ret = solu.rotateRight(head, 4)
+
+    temp = ret
+    while temp != None:
+        print(temp.val, end = "->")
+        temp = temp.next
+    print("NULL")
+
+
+
 # @lc code=end
 
