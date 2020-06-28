@@ -43,7 +43,7 @@ class Solution:
 
 if __name__ == "__main__":
     solu = Solution()
-    grid = [[1,3,1],⁠ [1,5,1],⁠ [4,2,1]]
+    grid = [[1,3,1], [1,5,1],⁠ [4,2,1]]
 
     ret = solu.minPathSum(grid)
 
