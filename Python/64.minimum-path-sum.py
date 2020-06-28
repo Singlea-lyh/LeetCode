@@ -36,10 +36,64 @@
 # @lc code=start
 class Solution:
     def minPathSum(self, grid: list) -> int:
+        # ret = 0
+
+        # if not grid:
+        #     return ret
+
+        # rowlen = len(grid)
+        # colulen = len(grid[0])
+
+        # matrix = [[0] * colulen for _ in range(rowlen)]
+        # matrix[0][0] = grid[0][0]
+
+        # for row in range(1, rowlen):
+        #     matrix[row][0] = matrix[row - 1][0] + grid[row][0]
+        #     # tempmin = min(tempmin, matrix[row][0])
+        # for colu in range(1, colulen):
+        #     matrix[0][colu] =  matrix[0][colu - 1] + grid[0][colu]
+        #     # tempmin = tempmin if tempmin < grid[0][colu] else grid[0][colu]
+
+        # print(matrix)
+        
+        # for row in range(1, rowlen):
+        #     for colu in range(1, colulen):
+        #         matrix[row][colu] = min(matrix[row - 1][colu] , matrix[row][colu - 1] ) + grid[row][colu]
+        
+        # ret = matrix[-1][-1]
+
+        # return ret
+
+
         ret = 0
 
+        if not grid:
+            return ret
 
-        print(ret)
+        rowlen = len(grid)
+        colulen = len(grid[0])
+
+        matrix = [0 for _ in range(colulen)]
+        matrix[0] = grid[0][0]
+
+       
+        for colu in range(1, colulen):
+            matrix[colu] =  matrix[colu - 1] + grid[0][colu]
+
+        # print(matrix)
+        
+        for row in range(1, rowlen):
+            for colu in range(colulen):
+                if colu == 0:
+                    matrix[colu] = matrix[colu] + grid[row][colu]
+                else:
+                    matrix[colu] = min(matrix[colu] , matrix[colu - 1]) + grid[row][colu]
+            # print(matrix)
+
+        
+        ret = matrix[-1]
+
+        return ret
 
 if __name__ == "__main__":
     solu = Solution()
