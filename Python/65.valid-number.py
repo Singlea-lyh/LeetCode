@@ -55,12 +55,44 @@
 class Solution:
     def isNumber(self, s: str) -> bool:
         ret = False
+        string = s.strip()
+        # print(string)
+        strlen = len(string)
+        # head = ["+", "-", "."] + [str(i)  for i in range(10)]
+        numbers = [str(i)  for i in range(10)]
+        # print(head)
 
+        if strlen == 0:
+            return ret
+
+        num_show_up , e_show_up, dot_show_up, num_show_e = False, False,False,False
+
+        for idx in range(strlen):
+            if string[idx] in numbers:
+                num_show_up = True
+                num_show_e = True
+            elif string[idx] in ('+', '-'):
+                if idx > 0 and string[idx - 1] != 'e':
+                    return False
+            elif string[idx] == '.':
+                if dot_show_up or e_show_up:
+                    return False
+                dot_show_up = True
+            elif string[idx] == 'e':
+                if e_show_up or not num_show_up:
+                    return False
+                e_show_up = True
+                num_show_up = False
+            else:
+                return False
+            
+        ret = num_show_up and num_show_e            
+            
         return ret
 
 if __name__ == "__main__":
     solu = Solution()
-    string  =  ""
+    string  =  " 1123  "
     ret = solu.isNumber(string)
 
     print(ret)
