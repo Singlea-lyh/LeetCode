@@ -48,12 +48,34 @@ class Solution:
         Do not return anything, modify nums in-place instead.
         """
         ret = []
+        numslen = len(nums)
 
+        zero = 0
+        two = numslen - 1
+
+        idx = 0
+
+        if numslen == 0:
+            return ret
+        
+        while idx < numslen:
+            if nums[idx] == 0:
+                nums[idx], nums[zero] = nums[zero], nums[idx]
+                zero += 1
+                idx += 1
+            elif nums[idx] == 2:
+                if idx > two:
+                    break
+                nums[two], nums[idx] = nums[idx], nums[two]
+                two -= 1
+            else:
+                idx += 1
+        ret = nums        
         return ret
 
 if __name__ == "__main__":
     solu = Solution()
-    nums = []
+    nums = [2,2,2,2,2]
     ret = solu.sortColors(nums)
     print(ret)
         
