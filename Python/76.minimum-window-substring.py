@@ -38,13 +38,46 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
         ret = ""
+        solve = False
+        slen = len(s)
+        if slen == 0:
+            return ret
 
+        from collections import defaultdict
+        left = 0
+
+        needdict = defaultdict(int)
+
+        for c in t:
+            needdict[c] += 1
+        needcnt = len(t)
+        # print(needdict)
+        res = (0, float('inf'))
+
+        for right ,c in enumerate(s):
+            if needdict[c] > 0:
+                needcnt -= 1
+            needdict[c] -= 1
+            if needcnt == 0:
+                while True:
+                    c = s[left]
+                    if needdict[c] == 0:
+                        break
+                    needdict[c] += 1
+                    left += 1
+                if right - left < res[1] - res[0]:
+                    res = (left, right)
+                needdict[s[left]] += 1
+                needcnt += 1
+                left += 1
+        ret = '' if res[1] > slen else s[res[0]:res[1] + 1]
+            
         return ret
 
 if __name__ == "__main__":
     solu = Solution()
-    soustr = ""
-    substr = ""
+    soustr = "ADOBECODEBANC"
+    substr = "ABC"
     ret = solu.minWindow(soustr, substr)
     print(ret)
         
