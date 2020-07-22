@@ -49,14 +49,46 @@ from typing import List
 
 class Solution:
     def search(self, nums: List[int], target: int) -> bool:
+        def binarysearch(start, end):
+            mid = 0
+            if start == end:
+                if nums[start] == target:
+                    return True
+                else:
+                    return False
+            elif start < end:
+                mid = (start + end) // 2
+                if nums[mid] == target:
+                    return True
+                elif nums[mid] < target:
+                    if nums[mid] <= nums[start]:
+                        return binarysearch(start, mid -1) or binarysearch(mid + 1, end)
+                    else:
+                        return binarysearch(mid + 1, end)
+                else:
+                    if nums[mid] < nums[start]:
+                        return binarysearch(start, mid - 1)
+                    else:
+                        return binarysearch(start, mid - 1) or binarysearch(mid + 1, end)
+            else:
+                return False
+
         ret = False
+        numslen = len(nums)
+        if numslen == 0:
+            return ret
+        start = 0
+        end = numslen - 1
+        mid = 0
+
+        ret = binarysearch(start, end)
 
         return ret
 
 if __name__ == "__main__":
     solu = Solution()
-    nums = [2,5,6,0,0,1,2]
-    target = 0
+    nums = [3,1]
+    target = 1
     ret = solu.search(nums, target)
     print(ret)
         
