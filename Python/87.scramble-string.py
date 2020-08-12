@@ -85,14 +85,42 @@ from typing import List
 class Solution:
     def isScramble(self, s1: str, s2: str) -> bool:
         ret = False
+        s1len = len(s1)
+        s2len = len(s2)
 
+        if s1len != s2len:
+            return ret
+
+        slen = s1len
+
+        dp = [[[False for _ in range(slen + 1)] for _ in range(slen)] for _ in range(slen)]
+        # print(dp)
+
+        for i in range(slen):
+            for j in range(slen):
+                dp[i][j][1] = (s1[i] == s2[j])
+        
+        # print(dp)
+
+        for complen in range(2, slen + 1):
+            for i in range(slen - complen + 1):
+                for j in range(slen - complen + 1):
+                    for k in range(1, complen):
+                        if (dp[i][j][k] and dp[i + k][j + k][complen - k]):
+                            dp[i][j][complen] = True
+                            break
+                        if (dp[i][j + complen -k][k] and dp[i + k][j][complen -  k]):
+                            dp[i][j][complen] = True
+                            break
+
+        ret = dp[0][0][slen]
 
         return ret
 
 if __name__ == "__main__":
     solu = Solution()
-    s1 = ""
-    s2 = ""
+    s1 = "abcde"
+    s2 = "caebd"
 
     ret = solu.isScramble(s1, s2)
 
