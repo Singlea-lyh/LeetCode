@@ -53,16 +53,39 @@ class Solution:
         """
         Do not return anything, modify nums1 in-place instead.
         """
-
         ret = []
+        end = m + n - 1
+        idxs1 = m - 1
+        idxs2 = n - 1
+
+        while idxs1 >= 0 or idxs2 >= 0:
+            if idxs1 < 0:
+                while idxs2 >= 0:
+                    nums1[end] = nums2[idxs2]
+                    idxs2 -= 1
+                    end -= 1
+                break
+            elif idxs2 < 0:
+                break
+            else:
+                nums1[end] = nums1[idxs1] if nums1[idxs1] >= nums2[idxs2] else nums2[idxs2]
+                if nums1[idxs1] >= nums2[idxs2]:
+                    idxs1 -= 1
+                else:
+                    idxs2 -= 1
+                end -= 1
+        ret = nums1
 
         return ret
 
 if __name__ == "__main__":
     solu = Solution()
-    nums1 = []
-    nums2 = []
-    ret = solu.merge(nums1, nums2)
+    nums1 = [1,2,3,0,0,0]
+    m = 3
+    nums2 = [2,5,6]
+    n = 3
+
+    ret = solu.merge(nums1, m, nums2, n)
     print(ret)
 
         
