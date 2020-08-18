@@ -57,18 +57,37 @@
 from typing import List
 class Solution:
     def grayCode(self, n: int) -> List[int]:
+        # ret = [0]
+        # head = 1
+        # # print(int("0101", 2))
+        # # temp = [0 for _ in range(n)]
+        # # print(temp)
+        # # elem_to_str = [str(i) for i in temp]
+        # # list_to_str = ''.join(elem_to_str)
+        # # print(list_to_str)
+        # # # ret.append(int(list_to_str, 2))
+
+        # for _ in range(n):
+        #     for j in range(len(ret) -  1, -1 , -1):
+        #         ret.append(head + ret[j])
+        #     head <<= 1
+
+        # return ret
+
+        def recursion(temp, res):
+            ret.append(res)
+            for i in range(1, temp + 1):
+                res ^= (1 << (i - 1))
+                recursion(i - 1, res)
+            # for i in range(0, temp):
+            #     res ^= (1 << i)
+            #     recursion(i, res)
+
         ret = []
-        # print(int("0101", 2))
-        temp = [0 for _ in range(n)]
-        # print(temp)
-        elem_to_str = [str(i) for i in temp]
-        list_to_str = ''.join(elem_to_str)
-        # print(list_to_str)
-        ret.append(int(list_to_str, 2))
-
-
+        recursion(n, 0)
 
         return ret
+        
 
 if __name__ == "__main__":
     solu = Solution()
