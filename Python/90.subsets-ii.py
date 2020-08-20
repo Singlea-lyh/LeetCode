@@ -40,7 +40,22 @@ from typing  import List
 
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        ret = []
+        def recurrence(start, temp):
+            for idx in range(start, numslen):
+                if idx > start and tempnums[idx] == tempnums[idx - 1]:
+                    continue
+                temp.append(tempnums[idx])
+                ret.append(temp[:])
+                recurrence(idx + 1, temp)
+                temp.pop()
+        ret = [[]]
+        numslen  = len(nums)
+        if numslen == 0:
+            return ret
+        tempnums = sorted(nums)
+        # print(tempnums)
+        subset = []
+        recurrence(0, subset)
 
         return ret
 
