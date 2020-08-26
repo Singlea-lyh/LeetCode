@@ -48,12 +48,34 @@
 class Solution:
     def numDecodings(self, s: str) -> int:
         ret = 0
+        slen = len(s)
+        if slen == 0:
+            return ret
+
+        dp = [0 for _ in range(slen)]
+
+        if s[0] == '0':
+            return ret
+
+        dp[0] = 1
+        for idx in range(1, slen):
+            if s[idx] != '0':
+                dp[idx] = dp[idx - 1]
+            tempnum = 10 * (ord(s[idx - 1]) - ord('0')) +  (ord(s[idx]) - ord('0'))
+
+            if 10 <= tempnum <= 26:
+                if idx == 1:
+                    dp[idx] += 1
+                else:
+                    dp[idx] += dp[idx - 2]
+        
+        ret = dp[slen - 1]
 
         return ret 
 
 if __name__ == "__main__":
     solu = Solution()
-    s = ""
+    s = "12"
     ret = solu.numDecodings(s)
     print(ret)
         
