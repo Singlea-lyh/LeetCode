@@ -42,9 +42,44 @@ from typing import List
 
 class Solution:
     def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
-        ret = ListNode(0)
+        if m == n or head == None:
+            return head
 
-        return ret
+        cur = head
+        pre = None
+        start = None
+        idx = 0
+        while cur != None:
+            idx += 1
+            if idx == m:
+                start = cur
+                break
+            pre = cur
+            cur = cur.next
+
+        if start == None:
+            return head
+        
+        while cur.next != None:
+            behind = cur.next
+            if pre != None:
+                temp = pre.next
+                pre.next = behind
+                cur.next = behind.next
+                behind.next = temp
+                # cur = cur 
+            else:
+                temp = head
+                cur.next = behind.next
+                behind.next = temp
+                head = behind
+
+
+            idx += 1 
+            if idx == n:
+                break 
+
+        return head
 
 if __name__ == "__main__":
     solu = Solution()
@@ -54,8 +89,8 @@ if __name__ == "__main__":
     two = ListNode(2, three)
     head = ListNode(1, two)
 
-    m = 2
-    n = 4
+    m = 1
+    n = 3
     temp = head
     while temp != None:
         print(temp.val, end = "->")
